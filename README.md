@@ -54,6 +54,7 @@ Database & App setup
   php artisan migrate:fresh --seed
 
   php artisan key:generate
+  php artisan jwt:secret
 ```
 
 Start the server
