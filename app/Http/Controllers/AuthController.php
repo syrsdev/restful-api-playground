@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AuthResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\JWTGuard;
 
 class AuthController extends Controller
@@ -18,13 +21,22 @@ class AuthController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
         }
-
-        return $this->respondWithToken($token);
+        return new AuthResource($this->respondWithToken($token), 'Success', 'Login successful');
     }
 
     public function register(Request $request)
     {
-        $user = \App\Models\User::create([
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(["Status" => "Failed", "Errors" => $validator->errors()], 422);
+        }
+
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
@@ -32,7 +44,7 @@ class AuthController extends Controller
 
         $token = Auth::guard('api')->login($user);
 
-        return $this->respondWithToken($token);
+        return new AuthResource($this->respondWithToken($token), 'Success', 'Register successful');
     }
 
     public function me()
