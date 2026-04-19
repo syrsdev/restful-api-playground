@@ -10,8 +10,10 @@ Repository ini dibuat untuk mempelajari lebih dalam tentang pembuatan restful ap
 
 ## Endpoint & Features
 
-Documentasi API: <https://documenter.getpostman.com/view/25808118/2sBXqDt3pK>
+Dokumentasi API: <https://documenter.getpostman.com/view/25808118/2sBXqDt3pK>
+Dokumentasi JWT: <https://jwt-auth.readthedocs.io/en/develop/laravel-installation/>
 
+- Authentication (JWT)
 - Get all data
 - Get single data
 - Create data
